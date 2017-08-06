@@ -26,7 +26,7 @@ $(document).ready(function () {
         var freq = $("#freq-input").val().trim();
 
         //if time format is not meeet show user a message and clear the field
-        if(moment(ftt, "HH:mm").isValid() === true){
+        if(moment(ftt, "HH:mm",true).isValid() === true){
           console.log(moment(ftt, "HH:mm").isValid());
           database.ref().push({
             name: name,
