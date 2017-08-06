@@ -1,66 +1,101 @@
 $(document).ready(function () {
 
-    //<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
-    //
-
     // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyAy_o7UX05hJucBrmww9zSR0Z-mljJPNdk",
-        authDomain: "empdatamgmt.firebaseapp.com",
-        databaseURL: "https://empdatamgmt.firebaseio.com",
-        projectId: "empdatamgmt",
-        storageBucket: "empdatamgmt.appspot.com",
-        messagingSenderId: "788027534154"
+  var config = {
+    apiKey: "AIzaSyCmlmJW42diueofP4l2lnKeWlG7bL06s0U",
+    authDomain: "train-schedule-34742.firebaseapp.com",
+    databaseURL: "https://train-schedule-34742.firebaseio.com",
+    projectId: "train-schedule-34742",
+    storageBucket: "train-schedule-34742.appspot.com",
+    messagingSenderId: "87598233427"
+
     };
+
     firebase.initializeApp(config);
 
     var database = firebase.database();
 
     // When user clicks "submit" button, add a new row to the HTML table on the page
-    $("#add-user").on("click", function () {
+    $("#add-train").on("click", function () {
         event.preventDefault();
 
 
         var name = $("#name-input").val().trim();
-        var role = $("#role-input").val().trim();
-        var date = $("#start-input").val().trim();
-        var rate = $("#rate-input").val().trim();
+        var des = $("#des-input").val().trim();
+        var ftt = $("#ftt-input").val().trim();
+        var freq = $("#freq-input").val().trim();
 
-
-        database.ref().push({
+        //if time format is not meeet show user a message and clear the field
+        if(moment(ftt, "HH:mm").isValid() === true){
+          console.log(moment(ftt, "HH:mm").isValid());
+          database.ref().push({
             name: name,
-            role: role,
-            date: date,
-            rate: rate,
-            dateAdded: firebase.database.ServerValue.TIMESTAMP
-        });
+            destination: des,
+            firstTrainTime: ftt,
+            frequency: freq,
+            });
 
-        // clear the on-screen fields
-        $("#name-input").val('');
-        $("#role-input").val('');
-        $("#start-input").val('');
-        $("#rate-input").val('');
+            // clear the on-screen fields
+            $("#name-input").val('');
+            $("#des-input").val('');
+            $("#ftt-input").val('');
+            $("#freq-input").val('');
+         }
+         else{
+          console.log(moment(ftt, "HH:mm").isValid());
+          $("#ftt-input").val('');
+          alert("The time format entered is invalid.  Time must be entered as \"HH:mm\"");
+         }
 
-    });
+      });
 
 
     database.ref().on("child_added", function (childSnapshot) {
 
-        // calculate months worked
-        var months = moment().diff(moment(childSnapshot.val().date, "DD/MM/YY"), "months");
+  // calculate the next arrival time an d the minutes away    
+    var tFrequency = childSnapshot.val().frequency;
 
-        // add new row to on-screen table
+    // Set the firstTime
+    var firstTime = childSnapshot.val().firstTrainTime;
+
+    // First Time (pushed back 1 year to make sure it comes before current time)
+    var firstTimeConverted = moment(firstTime, "HH:mm").subtract(1, "years");
+    console.log(firstTimeConverted);
+
+    // Current Time
+    var currentTime = moment();
+    console.log("CURRENT TIME: " + moment(currentTime).format("HH:mm"));
+
+    // Difference between the times
+    var diffTime = moment().diff(moment(firstTimeConverted), "minutes");
+    console.log("DIFFERENCE IN TIME: " + diffTime);
+
+    // Time apart (remainder)
+    var tRemainder = diffTime % tFrequency;
+    console.log(tRemainder);
+
+    // Minute Until Train
+    var tMinutesTillTrain = tFrequency - tRemainder;
+    console.log("MINUTES TILL TRAIN: " + tMinutesTillTrain);
+
+    // Next Train
+    var nextTrain = moment().add(tMinutesTillTrain, "minutes");
+    console.log("ARRIVAL TIME: " + moment(nextTrain).format("HH:mm"));
+
+// add new row to on-screen table
         $("#emp-table").append("<tr><td>" + childSnapshot.val().name + "</td>" +
-            "<td>" + childSnapshot.val().role + "</td>" +
-            "<td>" + childSnapshot.val().date + "</td>" +
-            "<td>" + months + "</td>" +
-            "<td>" + childSnapshot.val().rate + "</td>" +
-            "<td>" + Number(months) * Number(childSnapshot.val().rate) + "</td></tr>");
-
-        // Handle the errors
+            "<td>" + childSnapshot.val().destination + "</td>" +
+            "<td>" + childSnapshot.val().frequency + "</td>" +
+            "<td>" + moment(nextTrain).format("HH:mm a") + "</td>" +
+            "<td>" + tMinutesTillTrain + "</td></tr>");
+      // Handle the errors
     }, function (errorObject) {
         console.log("Errors handled: " + errorObject.code);
     });
+
+    //Show the current time
+    $("#currTime").append("<b>" + "Current Time: " +
+      moment().format("dddd, MMMM Do YYYY, h:mm:ss a") + "</b>");
 
 
 });

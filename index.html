@@ -40,8 +40,8 @@
             <div class="panel panel-default panel-primary">
 
                 <!-- Default panel contents -->
-                <div class="panel-heading">
-                    <b>Current Train Schedule</b>
+                <div class="panel-heading" id="currTime">
+                    <b>Current Train Schedule: </b>
                 </div>
 
                 <div class="panel-body">
@@ -64,29 +64,29 @@
         <div class="col-md-12">
             <div class="panel panel-default panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Add Employee</h3>
+                    <h3 class="panel-title">Add Train to Schedule</h3>
                 </div>
                 <div class="panel-body">
                     <!-- Sign-up Form (note the various input "types")-->
                     <form role="form">
                         <div class="form-group">
                             <label for="name-input">Train Name:</label>
-                            <input class="form-control" id="name-input" type="text">
+                            <input class="form-control" id="name-input" type="text" required >
                         </div>
                         <div class="form-group">
                             <label for="des-input">Destination:</label>
-                            <input class="form-control" id="des-input" type="text">
+                            <input class="form-control" id="des-input" type="text" required >
                         </div>
                         <div class="form-group">
                             <label for="ftt-input">First Train Time (HH:mm - Military Time):</label>
-                            <input class="form-control" id="ftt-input" type="text">
+                            <input class="form-control" id="ftt-input" type="text" required >
                         </div>
                         <div class="form-group">
                             <label for="freq-input">Frequency:</label>
-                            <input class="form-control" id="freq-input" type="number">
+                            <input class="form-control" id="freq-input" type="number" required >
                         </div>
 
-                        <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+                        <button class="btn btn-default" id="add-train" type="submit">Submit</button>
                     </form>
                 </div>
             </div>
