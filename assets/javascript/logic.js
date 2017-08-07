@@ -98,8 +98,9 @@ $(document).ready(function () {
       //moment().format("dddd, MMMM Do YYYY, h:mm:ss a") + "</b>");
         //setTimeout(displayTime, 1000);
     function displayTime() {
-        var time = moment().format("HH:mm:ss");
-        $("#currTime").html(time);
+        var time = moment().format("HH:mm:ss a");
+        $("#currTime").append("<b>" + "Current Time: " + time + "</b>);
+        $("#currTime").css("text-align", "right");
         setTimeout(displayTime, 1000);
         }
 
