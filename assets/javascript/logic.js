@@ -99,10 +99,7 @@ $(document).ready(function () {
         //setTimeout(displayTime, 1000);
     function displayTime() {
         var time = moment().format("HH:mm:ss a");
-        var span = $("<span>")
-        span.attr("id", "currclock");
-        span.css("text-align", "right");
-        $("#currTime").append(span + "Current Time: " + time);
+        $("#currClock").append("Current Time: " + time);
         setTimeout(displayTime, 1000);
         }
 
