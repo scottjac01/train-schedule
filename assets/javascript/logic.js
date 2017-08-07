@@ -99,7 +99,7 @@ $(document).ready(function () {
         //setTimeout(displayTime, 1000);
     function displayTime() {
         var time = moment().format("HH:mm:ss a");
-        $("#currClock").append("Current Time: " + time);
+        $("#currClock").html("Current Time: " + time);
         setTimeout(displayTime, 1000);
         }
 
