@@ -99,7 +99,7 @@ $(document).ready(function () {
         //setTimeout(displayTime, 1000);
     function displayTime() {
         var time = moment().format("HH:mm:ss a");
-        $("#currTime").append("<b>" + "Current Time: " + time + "</b>);
+        $("#currTime").append("<b>" + "Current Time: " + time + "</b>");
         $("#currTime").css("text-align", "right");
         setTimeout(displayTime, 1000);
         }
