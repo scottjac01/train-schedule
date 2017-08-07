@@ -14,7 +14,7 @@ $(document).ready(function () {
     firebase.initializeApp(config);
 
     var database = firebase.database();
-
+    displayTime();
     // When user clicks "submit" button, add a new row to the HTML table on the page
     $("#add-train").on("click", function () {
         event.preventDefault();
@@ -94,8 +94,13 @@ $(document).ready(function () {
     });
 
     //Show the current time
-    $("#currTime").append("<b>" + "Current Time: " +
-      moment().format("dddd, MMMM Do YYYY, h:mm:ss a") + "</b>");
-
+    //$("#currTime").append("<b>" + "Current Time: " +
+      //moment().format("dddd, MMMM Do YYYY, h:mm:ss a") + "</b>");
+        //setTimeout(displayTime, 1000);
+    function displayTime() {
+        var time = moment().format("HH:mm:ss");
+        $("#currTime").html(time);
+        setTimeout(displayTime, 1000);
+        }
 
 });
